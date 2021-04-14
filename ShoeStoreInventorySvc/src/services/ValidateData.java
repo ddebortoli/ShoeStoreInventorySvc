@@ -4,27 +4,24 @@ import java.util.Arrays;
 import java.util.List;
 
 import models.Shoe;
-import repositories.getShoes;
-public class validateData {
+import repositories.ShoesRepository;
+public class ValidateData {
 	
-	private Shoe shoe;
 	private ArrayList<String> result = new ArrayList<String>();
 	
-	public validateData(Shoe shoe) {
-		this.shoe = shoe;
+	public ValidateData() {
 	}
 	
-	public ArrayList<String> getData(){
-		if(!isNotValidData()) {
-			getShoes getData = new getShoes(shoe.getName(),shoe.getSize());
+	public ArrayList<String> getData(Shoe shoe){
+		if(isValidData(shoe)) {
+			ShoesRepository  getData = new ShoesRepository (shoe.getName(),shoe.getSize());
 			return (getData.getShoesFromDB());
 		}
 		return result;
-		
 	}
 	
-	private boolean isNotValidData() {
-		boolean Error = false;
+	private boolean isValidData(Shoe shoe) {
+		boolean Error = true;
 		String size = shoe.getSize();
 		List<String> list = Arrays.asList("31", "32", "33", "34");
 
@@ -32,14 +29,14 @@ public class validateData {
 		//Check for value of size
 		if (!list.contains(size)) {
 			result.add("input parameter value is not allowed");
-			Error = true;
+			Error = false;
 		}
 		
 		try {
 	        Integer.parseInt(size);
 	    }catch (NumberFormatException excepcion) {
 	    	result.add("input parameter with wrong value");
-	        Error = true;
+	        Error = false;
 	    }
 		
 		return Error;

@@ -1,13 +1,13 @@
 package repositories;
 import java.sql.*;
 import java.util.ArrayList;
-public class getShoes {
+public class ShoesRepository {
 	
 	private String nameShoe;
 	private String size;
 	private ArrayList<String> result = new ArrayList<String>();
 	
-	public getShoes(String nameShoe, String size) {
+	public ShoesRepository (String nameShoe, String size) {
 		this.nameShoe = nameShoe;
 		this.size = size;
 	}

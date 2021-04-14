@@ -1,4 +1,5 @@
 /models/
-/services/
+/module-info.class
 /repositories/
+/services/
 /testing/
