@@ -14,8 +14,8 @@ public class ValidateData {
 	
 	public ArrayList<String> getData(Shoe shoe){
 		if(isValidData(shoe)) {
-			ShoesRepository  getData = new ShoesRepository (shoe.getName(),shoe.getSize());
-			return (getData.getShoesFromDB());
+			ShoesRepository  getData = new ShoesRepository ();
+			return getData.getShoesFromDB(shoe);
 		}
 		return result;
 	}

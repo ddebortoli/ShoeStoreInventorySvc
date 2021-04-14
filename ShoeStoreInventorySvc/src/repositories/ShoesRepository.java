@@ -1,37 +1,41 @@
 package repositories;
 import java.sql.*;
 import java.util.ArrayList;
-public class ShoesRepository {
+
+import models.Shoe;
+public class ShoesRepository implements AutoCloseable {
 	
-	private String nameShoe;
-	private String size;
 	private ArrayList<String> result = new ArrayList<String>();
+	private Connection cn;
 	
-	public ShoesRepository (String nameShoe, String size) {
-		this.nameShoe = nameShoe;
-		this.size = size;
+	public ShoesRepository () {
+		try {
+			this.cn = DriverManager.getConnection(
+					"jdbc:mysql://localhost/db_shoesinventory",
+					"root",
+					"");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
-	public ArrayList<String> getShoesFromDB() {
+	public ArrayList<String> getShoesFromDB(Shoe shoe) {
 		//Preparo la consulta
-		String query = "SELECT shoes.Name,shoesquantity.T"+size
+		String query = "SELECT shoes.Name,shoesquantity.T"+shoe.getSize()
 				+ " FROM `shoes` INNER join shoesquantity on SHOES.Quantity = shoesquantity.Id "
 				+ "WHERE SHOES.Name = ?";
 		
 		try {
 			//Me conecto a la base de datos
-			Connection con = DriverManager.getConnection(
-					"jdbc:mysql://localhost/db_shoesinventory",
-					"root",
-					"");
-			PreparedStatement pstmt = con.prepareStatement(query);
-			pstmt.setString(1, this.nameShoe);
+			PreparedStatement pstmt = cn.prepareStatement(query);
+			pstmt.setString(1, shoe.getName());
 			ResultSet rs = pstmt.executeQuery();
 			
 			//Guardo los resultados en un ArrayList
 			while(rs.next()){
 				result.add(rs.getString("Name"));
-				result.add(rs.getString("T"+this.size));
+				result.add(rs.getString("T"+shoe.getSize()));
 			}
 			
 			rs.close();
@@ -41,5 +45,11 @@ public class ShoesRepository {
 			e.printStackTrace();
 		}
 		return result;
+	}
+
+	@Override
+	public void close() throws Exception {
+		// TODO Auto-generated method stub
+		cn.close();
 	}
 }
