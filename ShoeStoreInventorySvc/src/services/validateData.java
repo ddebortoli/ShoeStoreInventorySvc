@@ -3,21 +3,20 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import models.Shoe;
 import repositories.getShoes;
 public class validateData {
 	
-	private String name;
-	private String size;
+	private Shoe shoe;
 	private ArrayList<String> result = new ArrayList<String>();
 	
-	public validateData(String name,String size) {
-		this.name = name;
-		this.size = size;
+	public validateData(Shoe shoe) {
+		this.shoe = shoe;
 	}
 	
 	public ArrayList<String> getData(){
 		if(!isNotValidData()) {
-			getShoes getData = new getShoes(this.name,this.size);
+			getShoes getData = new getShoes(shoe.getName(),shoe.getSize());
 			return (getData.getShoesFromDB());
 		}
 		return result;
@@ -26,21 +25,18 @@ public class validateData {
 	
 	private boolean isNotValidData() {
 		boolean Error = false;
+		String size = shoe.getSize();
 		List<String> list = Arrays.asList("31", "32", "33", "34");
 
-		//Check for mandatory parameters
-		if (this.name == null || this.size == null) {
-			result.add("Mandatory parameter(s) missing");
-			Error = true;
-		}
+		
 		//Check for value of size
-		if (!list.contains(this.size)) {
+		if (!list.contains(size)) {
 			result.add("input parameter value is not allowed");
 			Error = true;
 		}
 		
 		try {
-	        Integer.parseInt(this.size);
+	        Integer.parseInt(size);
 	    }catch (NumberFormatException excepcion) {
 	    	result.add("input parameter with wrong value");
 	        Error = true;
