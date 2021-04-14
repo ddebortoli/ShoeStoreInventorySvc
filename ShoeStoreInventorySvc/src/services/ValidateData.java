@@ -1,5 +1,4 @@
 package services;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -7,35 +6,39 @@ import models.Shoe;
 import repositories.ShoesRepository;
 public class ValidateData {
 	
-	private ArrayList<String> result = new ArrayList<String>();
-	
+	private String result;	
+	private ShoesRepository  getData = new ShoesRepository ();
 	public ValidateData() {
 	}
 	
-	public ArrayList<String> getData(Shoe shoe){
+	public String getData(Shoe shoe){
 		if(isValidData(shoe)) {
-			ShoesRepository  getData = new ShoesRepository ();
-			return getData.getShoesFromDB(shoe);
+			try {
+				return getData.getShoesFromDB(shoe);
+			}finally {
+				
+			}
 		}
 		return result;
 	}
 	
 	private boolean isValidData(Shoe shoe) {
 		boolean Error = true;
+		result = "";
 		String size = shoe.getSize();
 		List<String> list = Arrays.asList("31", "32", "33", "34");
 
 		
 		//Check for value of size
 		if (!list.contains(size)) {
-			result.add("input parameter value is not allowed");
+			result = result + ("input parameter value is not allowed. ");
 			Error = false;
 		}
 		
 		try {
 	        Integer.parseInt(size);
 	    }catch (NumberFormatException excepcion) {
-	    	result.add("input parameter with wrong value");
+	    	result = result + ("input parameter with wrong value. ");
 	        Error = false;
 	    }
 		
